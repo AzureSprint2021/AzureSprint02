@@ -22,8 +22,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - uses: actions/upload-artifact@v2
-      if: failure()
       with:
-        name: my-artifact
-        path: path/to/artifact/
+        path: path/to/artifact/world.txt
 
