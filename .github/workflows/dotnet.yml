@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: publish
-      run: dotnet publish -c -release -o ${{env.DOTNET_ROOT}}/petshop
+      run: dotnet publish -c release -o ${{env.DOTNET_ROOT}}/petshop
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.3
       with:
