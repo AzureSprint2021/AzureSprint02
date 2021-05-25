@@ -26,7 +26,7 @@ namespace AnimalAdoption.Common.Logic
             switch (id)
             {
                 case "pencil":
-                    name = "Charlie";
+                    name = "Charlie123";
                     break;
                 case "flower":
                     name = "Jackie";
