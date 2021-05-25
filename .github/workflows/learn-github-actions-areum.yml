@@ -23,5 +23,5 @@ jobs:
       run: dotnet build --no-restore
     - uses: actions/upload-artifact@v2
       with:
-        path: path/to/artifact/world.txt
+        path: /home/runner/work/AzureSprint02/AzureSprint02/*
 
