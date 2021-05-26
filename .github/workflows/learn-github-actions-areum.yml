@@ -21,3 +21,12 @@ jobs:
           # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
           creds: ${{ secrets.AZURE_CREDENTIALS }}
     
+    
+      - name: Azure App Service Settings
+        uses: Azure/appservice-settings@v1
+        with:
+          # Name of the Azure Web App
+          app-name: catHouse2
+          # Application settings using the JSON syntax set as value of secret variable: APP_SETTINGS
+          app-settings-json: '${{ secrets.APP_SETTINGS }}'
+
