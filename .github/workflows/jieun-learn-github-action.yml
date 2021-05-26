@@ -16,15 +16,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
     - uses: actions/checkout@v2
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
+        
     - name: Restore dependencies
       run: dotnet restore
       
-        # Authenticates packages to push to GPR
+    # Authenticates packages to push to GPR
     - name: Setup .NET Core @ Latest
       uses: actions/setup-dotnet@v1
       with:
@@ -39,39 +42,34 @@ jobs:
       run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
       
     - name: Publish
-      run: dotnet publish ${{ github.workspace }}/AnimalAdoption.Web.Portal/AnimalAdoption.Web.Portal.csproj --configuration Release --no-build --output ./taa-portal/
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.1.3
+      run: dotnet publish -c release -o /home/runner/work/AzureSprint02/AzureSprint02/test
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - uses: actions/upload-artifact@v2
       with:
-        name: drop
-        path:  ${{ github.workspace }}/taa-portal/
-        if-no-files-found: error
+        name: my-artifact
+        path: /home/runner/work/AzureSprint02/AzureSprint02/test/*
   
   deploy:
+  
       needs: build
       runs-on: ubuntu-latest
+      
       steps:
-      - uses: actions/download-artifact@v2.0.5
+      
+      - uses: actions/download-artifact@v2
         with:
           name: my-artifact
-          path: ./taa-portal/
-          
-          
 
-      #- name: Display structure of downloaded files
-      #  run: ls -R
-        
-        #
-        # Deploy to Azure Web apps
+#      - name: Display structure of downloaded files
+#        run: ls -R
+
       - name: Run Azure
         uses: azure/webapps-deploy@v2
         with: 
           app-name: 'catHouse' # Replace with your app name
           slot-name: 'production'
-          publish-profile: ${{ secrets.JIEUN_SECRET  }} # Define secret variable in repository settings as per action documentation
-          #package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
-          package: ./taa-portal/
-        
-
-  
-        
+          publish-profile: ${{ secrets.JIEUN_SECRET }}
+          package: .
