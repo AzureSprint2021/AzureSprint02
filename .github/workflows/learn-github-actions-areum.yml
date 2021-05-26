@@ -36,15 +36,15 @@ jobs:
       run: dotnet pack --configuration Release ${{ env.LogicProjectPath }}
     - name: Push package to GitHub registry
       run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
-      
-    - name : Publish
-      run : dotnet publish -c release -o /home/runner/work/AzureSprint02/AzureSprint02/test
     - name: Build
       run: dotnet build --no-restore
+    - name : Publish
+      run : dotnet publish -c release -o ${{env.DOTNET_ROOT}}/areum --no-build
+
     - uses: actions/upload-artifact@v2
       with:
         name : areum_artifact
-        path: /home/runner/work/AzureSprint02/AzureSprint02/*
+        path: ${{env.DOTNET_ROOT}}/areum
         
   deploy:
     runs-on: ubuntu-latest
