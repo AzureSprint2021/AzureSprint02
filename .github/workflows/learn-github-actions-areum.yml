@@ -54,7 +54,7 @@ jobs:
           uses: azure/webapps-deploy@v2
           with:
             app-name: 'catHouse'
-            slot-name: 'production'
+            slot-name: 'cathouse-areumSlot'
             publish-profile: ${{ secrets.AREUM_SECRET}}
             package: .
 
