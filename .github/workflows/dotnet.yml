@@ -5,14 +5,13 @@ on:
     branches: [ yi.jung ]
   pull_request:
     branches: [ master ]
+
 env:
   GitHubPackageFeedUrl: https://nuget.pkg.github.com/AzureSprint2021/index.json
   LogicProjectPath: ${{ github.WORKSPACE }}/AnimalAdoption.Common.Logic
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -44,4 +43,12 @@ jobs:
       run: dotnet pack --configuration Release ${{ env.LogicProjectPath }}
     - name: Push package to GitHub registry
       run: dotnet nuget push ${{ env.LogicProjectPath }}/\*\*/\*.nupkg --skip-duplicate
-
+  deployment: 
+    runs-on: ubuntu-latest
+    steps: 
+    -uses: azure/webapps-deploy@v2
+    -name: deployCatHouse
+    with: 
+      app-name: petshop # Replace with your app name
+      publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+      package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/petshop/'
