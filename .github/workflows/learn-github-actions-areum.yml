@@ -24,6 +24,19 @@ jobs:
         dotnet-version: 3.1.x
     - name: Restore dependencies
       run: dotnet restore
+      
+      # Authenticates packages to push to GPR
+    - name: Setup .NET Core @ Latest
+      uses: actions/setup-dotnet@v1
+      with:
+        source-url: ${{ env.GitHubPackageFeedUrl }}
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically creates a GITHUB_TOKEN secret to use in your workflow
+    - name: Package up project
+      run: dotnet pack --configuration Release ${{ env.LogicProjectPath }}
+    - name: Push package to GitHub registry
+      run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
+      
     - name : Publish
       run : dotnet publish -c release -o /home/runner/work/AzureSprint02/AzureSprint02/test
     - name: Build
@@ -32,17 +45,4 @@ jobs:
       with:
         path: /home/runner/work/AzureSprint02/AzureSprint02/*
 
-    # Authenticates packages to push to GPR
-    - name: Setup .NET Core @ Latest
-      uses: actions/setup-dotnet@v1
-      with:
-        source-url: ${{ env.GitHubPackageFeedUrl }}
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically creates a GITHUB_TOKEN secret to use in your workflow
-
-    - name: Package up project
-      run: dotnet pack --configuration Release ${{ env.LogicProjectPath }}
-
-    - name: Push package to GitHub registry
-      run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
-
+    
