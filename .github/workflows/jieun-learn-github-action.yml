@@ -44,9 +44,11 @@ jobs:
       run: dotnet build --no-restore
     - uses: actions/upload-artifact@v2
       with:
+        name: my-artifact
         path: /home/runner/work/AzureSprint02/AzureSprint02/test/*
   
   deploy:
+      needs: build
       runs-on: ubuntu-latest
       steps:
       - uses: actions/download-artifact@v2
