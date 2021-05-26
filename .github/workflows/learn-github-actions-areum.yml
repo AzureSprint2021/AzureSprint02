@@ -10,54 +10,14 @@ on:
 env:
   GitHubPackageFeedUrl: https://nuget.pkg.github.com/AzureSprint2021/index.json
   LogicProjectPath: ${{ github.WORKSPACE }}/AnimalAdoption.Common.Logic
-            
-        
+             
 jobs:
-    build:
-      runs-on: ubuntu-latest
-
-      steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+  job1 : 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: Azure/login@v1
         with:
-          dotnet-version: '3.1.301'
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        #run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-        run: dotnet publish ${{ github.WORKSPACE }}/AnimalAdoption.Web.Portal/AnimalAdoption.Web.Portal.csproj -c Release -o ${{ github.WORKSPACE }}/myapp
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: .net-app
-          path: ${{ github.WORKSPACE }}/myapp
-
-    deploy:
-      runs-on: ubuntu-latest
-      needs: build
-      environment:
-        name: 'production'
-        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-      steps:
-        - name: Download artifact from build job
-          uses: actions/download-artifact@v2
-          with:
-            name: .net-app
-
-        - name: Deploy to Azure Web App
-          id: deploy-to-webapp
-          uses: azure/webapps-deploy@v2
-          with:
-            app-name: 'catHouse2'
-            #slot-name: 'cathouse-areumSlot'
-            publish-profile: ${{ secrets.AREUM_SECRET }}
-            package: .
-
-
+          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
     
