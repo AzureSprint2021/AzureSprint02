@@ -1,0 +1,26 @@
+name: .NET
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Publish
+      run: dotnet publish -c release -o /home/runner/work/AzureSprint02/AzureSprint02/test
+    - name: Build
+      run: dotnet build --no-restore
+    - uses: actions/upload-artifact@v2
+      with:
+        path: /home/runner/work/AzureSprint02/AzureSprint02/*
