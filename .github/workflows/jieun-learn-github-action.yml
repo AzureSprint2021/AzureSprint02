@@ -55,8 +55,8 @@ jobs:
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       with:
-        app-name: wa-test-aueast-azsprintseries
-        publish-profile: ${{ secrets.WA_TEST_AUEAST_AZSPRINTSERIES_PUBLISH_PROFILE }}
+        app-name: catHouse
+        publish-profile: ${{ secrets.JIEUN_SECRET }}
         package: ./taa-portal/
 
         
