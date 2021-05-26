@@ -1,6 +1,8 @@
 name: .NET
 
 on:
+  push :
+    branches : [ master ]
   pull_request:
     branches: [ master ]
 
@@ -19,8 +21,10 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore --configuration release
+      - name : test
+        run : dotnet test --filter FullyQualifiedName\!~FunctionalTests
       - name: publish
-        run: dotnet publish -c release -o ${{env.DOTNET_ROOT}}/petshop
+        run: dotnet publish -c release -o ${{env.DOTNET_ROOT}}/masterArtifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
@@ -29,3 +33,4 @@ jobs:
           # A file, directory or wildcard pattern that describes what to upload
           path: ${{env.DOTNET_ROOT}}/masterArtifact
           # The desired behavior if no files are found using the provided path.
+      
