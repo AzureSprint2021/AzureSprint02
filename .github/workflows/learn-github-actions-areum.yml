@@ -43,6 +43,7 @@ jobs:
       run: dotnet build --no-restore
     - uses: actions/upload-artifact@v2
       with:
+        name : areum_artifact
         path: /home/runner/work/AzureSprint02/AzureSprint02/*
         
   deploy:
@@ -51,7 +52,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: artifact
+          name: areum_artifact
       - name: Display structure of downloaded files
         run: ls -R
       - name: Azure WebApp
@@ -59,6 +60,7 @@ jobs:
         with:
           # Name of the Azure Web App
           app-name: catHouse
+          slot-name : production
           # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
           publish-profile: ${{secrets.AREUM_SECRET}}
           # Enter an existing Slot other than the Production slot
