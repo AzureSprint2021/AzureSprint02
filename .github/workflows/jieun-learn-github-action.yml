@@ -63,7 +63,7 @@ jobs:
       - name: Run Azure
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          app-name: catHouse # Replace with your app name
           publish-profile: ${{ secrets.JIEUN_SECRET  }} # Define secret variable in repository settings as per action documentation
           #package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           package: '/home/runner/work/AzureSprint02/AzureSprint02/test'
