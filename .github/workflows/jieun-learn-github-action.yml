@@ -45,6 +45,18 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         path: /home/runner/work/AzureSprint02/AzureSprint02/test/*
+  
+  deploy:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: my-artifact
+
+      - name: Display structure of downloaded files
+        run: ls -R
         
 
   
