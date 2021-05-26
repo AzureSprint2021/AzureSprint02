@@ -1,3 +1,4 @@
+# areum
 name: .NET
 
 on:
@@ -5,6 +6,10 @@ on:
     branches: [ areum ]
   pull_request:
     branches: [ master ]
+    
+env:
+  GitHubPackageFeedUrl: https://nuget.pkg.github.com/AzureSprint2021/index.json
+  LogicProjectPath: ${{ github.WORKSPACE }}/AnimalAdoption.Common.Logic
 
 jobs:
   build:
@@ -26,4 +31,18 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         path: /home/runner/work/AzureSprint02/AzureSprint02/*
+
+    # Authenticates packages to push to GPR
+    - name: Setup .NET Core @ Latest
+      uses: actions/setup-dotnet@v1
+      with:
+        source-url: ${{ env.GitHubPackageFeedUrl }}
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically creates a GITHUB_TOKEN secret to use in your workflow
+
+    - name: Package up project
+      run: dotnet pack --configuration Release ${{ env.LogicProjectPath }}
+
+    - name: Push package to GitHub registry
+      run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
 
