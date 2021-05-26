@@ -46,9 +46,14 @@ jobs:
   deployment: 
     runs-on: ubuntu-latest
     steps: 
+    - uses: actions/download-artifact@v2
+      with:
+        name: my-artifact
+    - name: Display structure of downloaded files
+      run: ls -R
     -uses: azure/webapps-deploy@v2
     -name: deployCatHouse
     with: 
       app-name: petshop # Replace with your app name
       publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-      package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/petshop/'
+      package: './petshop'
