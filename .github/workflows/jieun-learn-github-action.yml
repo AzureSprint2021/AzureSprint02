@@ -23,6 +23,7 @@ jobs:
         dotnet-version: 3.1.x
     - name: Restore dependencies
       run: dotnet restore
+      
         # Authenticates packages to push to GPR
     - name: Setup .NET Core @ Latest
       uses: actions/setup-dotnet@v1
@@ -36,13 +37,14 @@ jobs:
 
     - name: Push package to GitHub registry
       run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
+      
     - name: Publish
       run: dotnet publish -c release -o /home/runner/work/AzureSprint02/AzureSprint02/test
     - name: Build
       run: dotnet build --no-restore
     - uses: actions/upload-artifact@v2
       with:
-        path: /home/runner/work/AzureSprint02/AzureSprint02/*
+        path: /home/runner/work/AzureSprint02/AzureSprint02/test/*
         
 
   
