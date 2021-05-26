@@ -38,33 +38,32 @@ jobs:
       run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
     - name: Build
       run: dotnet build --no-restore
-    - name : Publish
-      run : dotnet publish -c release -o ${{env.DOTNET_ROOT}}/areum
-
-    - uses: actions/upload-artifact@v2
+      
+    - name: Publish portal project in Release mode
+      run: dotnet publish ${{ github.workspace }}\AnimalAdoption.Web.Portal\AnimalAdoption.Web.Portal.csproj --configuration Release --no-build --output ./taa-portal/
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.1.3
       with:
-        name : areum_artifact
-        path: ${{env.DOTNET_ROOT}}/areum
+        name: drop
+        path:  ${{ github.workspace }}\taa-portal\
+        if-no-files-found: error
         
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: areum_artifact
-      - name: Display structure of downloaded files
-        run: ls -R
-      - name: Azure WebApp
-        uses: Azure/webapps-deploy@v2
-        with:
-          # Name of the Azure Web App
-          app-name: catHouse
-          slot-name : production
-          # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
-          publish-profile: ${{secrets.AREUM_SECRET}}
-          # Enter an existing Slot other than the Production slot
-          # Applies to Web App Containers only: Specify the fully qualified container image(s) name. For example, 'myregistry.azurecr.io/nginx:latest' or 'python:3.7.2-alpine/'. For multi-container scenario multiple container image names can be provided (multi-line separated)
-          package : .
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.5
+      with:
+        name: drop
+        path: ./taa-portal/
+        
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: wa-test-aueast-azsprintseries
+        publish-profile: ${{ secrets.WA_TEST_AUEAST_AZSPRINTSERIES_PUBLISH_PROFILE }}
+        package: ./taa-portal/
+
 
     
