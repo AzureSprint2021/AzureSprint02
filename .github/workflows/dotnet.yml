@@ -4,7 +4,7 @@ on:
   push:
     branches: [ yi.jung ]
   pull_request:
-    branches: [ yi.jung ]
+    branches: [ master ]
 
 jobs:
   build:
