@@ -26,15 +26,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: Test
-      run : dotnet test --filter FullyQualifiedName\!~FunctionalTests
+      run : dotnet test --filter FullyQualifiedName/!~FunctionalTests
     
     - name: Publish portal project in Release mode
-      run: dotnet publish ${{ github.workspace }}\AnimalAdoption.Web.Portal\AnimalAdoption.Web.Portal.csproj --configuration Release --output ./taa-portal/
+      run: dotnet publish ${{ github.workspace }}/AnimalAdoption.Web.Portal/AnimalAdoption.Web.Portal.csproj --no-build --configuration Release --output ./taa-portal/
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.1.3
       with:
         name: drop
-        path:  ${{ github.workspace }}\taa-portal\
+        path:  ${{ github.workspace }}/taa-portal/
         if-no-files-found: error
       # Set these variables at either the step or workflow level
     - name: Package up project
