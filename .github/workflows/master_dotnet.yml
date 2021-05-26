@@ -24,7 +24,7 @@ jobs:
       - name : test
         run : dotnet test --filter FullyQualifiedName\!~FunctionalTests
       - name: publish
-        run: dotnet publish -c release -o ${{env.DOTNET_ROOT}}/petshop
+        run: dotnet publish -c release -o ${{env.DOTNET_ROOT}}/masterArtifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
