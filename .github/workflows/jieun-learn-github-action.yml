@@ -55,16 +55,16 @@ jobs:
         with:
           name: my-artifact
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      #- name: Display structure of downloaded files
+      #  run: ls -R
         
         #
         # Deploy to Azure Web apps
       - name: Run Azure
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: catHouse # Replace with your app name
-          slot-name: production
+          app-name: 'catHouse' # Replace with your app name
+          slot-name: 'production'
           publish-profile: ${{ secrets.JIEUN_SECRET  }} # Define secret variable in repository settings as per action documentation
           #package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           package: .
